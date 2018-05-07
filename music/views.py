@@ -1,21 +1,29 @@
-from django.shortcuts import render
-from rest_framework import viewsets
-from rest_framework.response import Response
+from rest_framework import generics
+from rest_framework.renderers import JSONRenderer
 
-from .models import Album, Track
-from .serializers import *
+from .serializers import TrackSerializer, AlbumSerializer
+from .models import Track, Album
 
 
-class TrackViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows users to be viewed or edited.
-    """
-    queryset = Track.objects.all().order_by('title')
+class TrackList(generics.ListCreateAPIView):
+    queryset = Track.objects.all()
     serializer_class = TrackSerializer
+    renderer_classes = (JSONRenderer, )
 
-class AlbumViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows groups to be viewed or edited.
-    """
+
+class TrackDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Track.objects.all()
+    serializer_class = TrackSerializer
+    renderer_classes = (JSONRenderer, )
+
+
+class AlbumList(generics.ListCreateAPIView):
     queryset = Album.objects.all()
     serializer_class = AlbumSerializer
+    renderer_classes = (JSONRenderer, )
+
+
+class AlbumDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Album.objects.all()
+    serializer_class = AlbumSerializer
+    renderer_classes = (JSONRenderer, )

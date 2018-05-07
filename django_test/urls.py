@@ -16,14 +16,19 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
+from rest_framework.urlpatterns import format_suffix_patterns
+
 from music import views
 
-router = routers.DefaultRouter()
-router.register('tracks', views.TrackViewSet)
-router.register('albums', views.AlbumViewSet)
+# router = routers.DefaultRouter()
+# router.register('tracks', views.TrackViewSet)
+# router.register('albums', views.AlbumViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    path('api/albums/', views.AlbumList.as_view()),
+    path('api/albums/<int:pk>/', views.AlbumDetail.as_view()),
+    path('api/tracks/', views.TrackList.as_view()),
+    path('api/tracks/<int:pk>/', views.TrackDetail.as_view()),
 ]
+urlpatterns = format_suffix_patterns(urlpatterns)
